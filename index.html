@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sai Travels Booking</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="container">
+    <h1>Sai-Mauli Travels Seat Booking</h1>
+
+    <!-- Legend -->
+    <div id="legend">
+      <span class="legend-box singleSeat">S</span> = Single &nbsp;&nbsp;
+      <span class="legend-box doubleSeat">D</span> = Double &nbsp;&nbsp;
+      <span class="legend-box doubleSeat window">W</span> = Window &nbsp;&nbsp;
+      <span class="legend-box bed">B</span> = Bed
+    </div>
+
+    <!-- Buttons -->
+    <div id="buttons">
+      <button onclick="showSingleSeats()">Single Seat</button>
+      <button onclick="showDoubleSeats()">Double Seat</button>
+      <button onclick="showBedSeats()">Bed</button>
+      <button onclick="clearAllBookings()">Clear All Booking</button>
+    </div>
+
+    <!-- Layouts -->
+    <div id="seats" class="seats"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
