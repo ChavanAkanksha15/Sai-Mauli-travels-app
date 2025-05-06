@@ -77,19 +77,27 @@ function createSeat(label, className) {
     return div;
 }
 
-// Booking Handler
 function handleBooking(div, label) {
-    const name = prompt(`Enter name to book seat ${label}`);
-    if (!name) return; // If no name is entered, do nothing
+    const name = prompt(`Enter name to book or update seat ${label}`);
+    
+    if (!name) {
+        // If input is empty, remove booking
+        delete bookings[label];
+        localStorage.setItem("bookings", JSON.stringify(bookings)); // Update storage
+        div.classList.remove("booked");
+        div.classList.add("available");
+        div.textContent = label; // Show original seat label
+        return;
+    }
 
-    // Store the booking in the bookings object and update localStorage
+    // Update booking
     bookings[label] = { name };
-    localStorage.setItem("bookings", JSON.stringify(bookings));  // Persist bookings data in localStorage
-
+    localStorage.setItem("bookings", JSON.stringify(bookings)); // Save changes
     div.classList.remove("available");
     div.classList.add("booked");
     div.innerHTML = `${label}<br>(${name})`;
 }
+
 
 // Clear All Bookings
 function clearAllBookings() {
