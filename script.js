@@ -1,18 +1,18 @@
 let seatsDiv = document.getElementById("seats");
-let bookings = JSON.parse(localStorage.getItem("bookings")) || {};
+let bookings = JSON.parse(localStorage.getItem("bookings")) || {}; // Retrieve bookings from localStorage
 
 window.onload = () => {
-    showSeats();
+    showSeats();  // Display the seats layout (Single + Double)
 };
 
-// Combined Seats View (Single + Double Seats)
+// Show Combined Seats (Single + Double)
 function showSeats() {
-    seatsDiv.innerHTML = "";
+    seatsDiv.innerHTML = "";  // Clear any existing seats
 
     const seatContainer = document.createElement("div");
     seatContainer.className = "seats";
 
-    // Left column - V1 to V13 (Single Seats)
+    // Left column - Single Seats (V1 to V13)
     const singleColumn = document.createElement("div");
     singleColumn.className = "left-column";
     for (let i = 1; i <= 13; i++) {
@@ -20,7 +20,7 @@ function showSeats() {
         singleColumn.appendChild(vSeat);
     }
 
-    // Right column - Double Seats A, Bw, ..., 20w
+    // Right column - Double Seats (A/Bw, C/Dw, etc.)
     const doubleColumn = document.createElement("div");
     doubleColumn.className = "right-column";
 
@@ -39,7 +39,16 @@ function showSeats() {
             const labelDiv = document.createElement("div");
             labelDiv.className = "double-label";
             labelDiv.textContent = label;
-            labelDiv.onclick = () => handleBooking(labelDiv, label); // Add click handler for double seats
+
+            // Check if the seat is already booked
+            if (bookings[label]) {
+                labelDiv.classList.add("booked");
+                labelDiv.innerHTML = `${label}<br>(${bookings[label].name})`;
+            } else {
+                labelDiv.classList.add("available");
+            }
+
+            labelDiv.onclick = () => handleBooking(labelDiv, label); // Add booking handler for double seats
             row.appendChild(labelDiv);
         });
 
@@ -51,14 +60,53 @@ function showSeats() {
     seatsDiv.appendChild(seatContainer);
 }
 
-// Bed Seats Layout
+// Create Seat (for Single and Double)
+function createSeat(label, className) {
+    const div = document.createElement("div");
+    div.className = className;
+
+    if (bookings[label]) {
+        div.classList.add("booked");
+        div.innerHTML = `${label}<br>(${bookings[label].name})`;
+    } else {
+        div.classList.add("available");
+        div.textContent = label;
+    }
+
+    div.onclick = () => handleBooking(div, label);
+    return div;
+}
+
+// Booking Handler
+function handleBooking(div, label) {
+    const name = prompt(`Enter name to book seat ${label}`);
+    if (!name) return; // If no name is entered, do nothing
+
+    // Store the booking in the bookings object and update localStorage
+    bookings[label] = { name };
+    localStorage.setItem("bookings", JSON.stringify(bookings));  // Persist bookings data in localStorage
+
+    div.classList.remove("available");
+    div.classList.add("booked");
+    div.innerHTML = `${label}<br>(${name})`;
+}
+
+// Clear All Bookings
+function clearAllBookings() {
+    if (confirm("Clear all bookings?")) {
+        bookings = {};  // Reset the bookings object
+        localStorage.removeItem("bookings");  // Remove all bookings data from localStorage
+        seatsDiv.innerHTML = "";  // Clear displayed seats
+    }
+}
+// Show Bed Seats Layout
 function showBedSeats() {
-    seatsDiv.innerHTML = "";
+    seatsDiv.innerHTML = "";  // Clear any existing seats before rendering bed seats
 
     const bedLayout = document.createElement("div");
     bedLayout.className = "seats";
 
-    // Left - S1 to S6 (vertical)
+    // Left column - S1 to S6 (vertical bed seats)
     const sColumn = document.createElement("div");
     sColumn.className = "left-column";
     for (let i = 1; i <= 6; i++) {
@@ -66,7 +114,7 @@ function showBedSeats() {
         sColumn.appendChild(sSeat);
     }
 
-    // Right - U1/2 to U11/12 (2 columns)
+    // Right column - U1/2 to U11/12 (pair of bed seats)
     const uColumn = document.createElement("div");
     uColumn.className = "right-column";
 
@@ -90,42 +138,4 @@ function showBedSeats() {
     bedLayout.appendChild(sColumn);
     bedLayout.appendChild(uColumn);
     seatsDiv.appendChild(bedLayout);
-}
-
-// Create Seat (Both Single and Double)
-function createSeat(label, className) {
-    const div = document.createElement("div");
-    div.className = className;
-
-    if (bookings[label]) {
-        div.classList.add("booked");
-        div.innerHTML = `${label}<br>(${bookings[label].name})`;
-    } else {
-        div.classList.add("available");
-        div.textContent = label;
-    }
-
-    div.onclick = () => handleBooking(div, label);
-    return div;
-}
-
-// Booking Handler (No payment prompt)
-function handleBooking(div, label) {
-    const name = prompt(`Enter name to book seat ${label}`);
-    if (!name) return;
-
-    bookings[label] = { name };
-    localStorage.setItem("bookings", JSON.stringify(bookings));
-    div.classList.remove("available");
-    div.classList.add("booked");
-    div.innerHTML = `${label}<br>(${name})`;
-}
-
-// Clear Bookings
-function clearAllBookings() {
-    if (confirm("Clear all bookings?")) {
-        bookings = {};
-        localStorage.removeItem("bookings");
-        seatsDiv.innerHTML = "";
-    }
 }
