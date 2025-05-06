@@ -10,7 +10,7 @@ body {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
@@ -32,6 +32,24 @@ h1 {
     color: white;
     border-radius: 5px;
     font-size: 14px;
+    font-weight: bold;
+}
+
+/* Legend Colors */
+.singleSeat {
+    background-color: #3498db; /* Blue for Single Seat */
+}
+
+.doubleSeat {
+    background-color: #9b59b6; /* Purple for Double Seat */
+}
+
+.window {
+    background-color: #9b59b6; /* Purple for Window Seat */
+}
+
+.bed {
+    background-color: #f39c12; /* Orange for Bed Seat */
 }
 
 #buttons {
@@ -88,6 +106,7 @@ h1 {
 
 .bedSeat {
     background-color: #f39c12; /* Orange for Bed Seat */
+    color: white;
 }
 
 .double-label {
@@ -96,22 +115,30 @@ h1 {
     font-weight: bold;
     padding: 10px 14px;
     color: white;
-    background-color: #9b59b6; /* Purple for Double and Window Seats */
+    background-color: #9b59b6; /* Purple for Double Seat */
     border-radius: 6px;
 }
 
 .available {
-    background-color: #2ecc71; /* Green */
+    background-color: #2ecc71; /* Green for Available Seats */
 }
 
 .booked {
-    background-color: #e74c3c !important; /* Red */
+    background-color: #e74c3c !important; /* Red for Booked Seats */
 }
 
-/* Responsive */
+/* Responsive Design */
 @media (max-width: 768px) {
     .seats {
         flex-direction: column;
         align-items: center;
+    }
+
+    .left-column, .right-column {
+        gap: 5px;
+    }
+
+    .row-labels {
+        flex-direction: column;
     }
 }
