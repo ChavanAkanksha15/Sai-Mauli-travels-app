@@ -2,70 +2,103 @@ let seatsDiv = document.getElementById("seats");
 let bookings = JSON.parse(localStorage.getItem("bookings")) || {};
 
 window.onload = () => {
-    showSingleSeats(); // default view
+    showSeats();
 };
 
-// ------------------------------
-// Seat Display Functions
-// ------------------------------
-function showSingleSeats() {
+// Combined Seats View
+function showSeats() {
     seatsDiv.innerHTML = "";
-    for (let i = 1; i <= 13; i++) {
-        const seat = createSeat(`S${i}`, "singleSeat");
-        seatsDiv.appendChild(seat);
-    }
-}
 
-function showDoubleSeats() {
-    seatsDiv.innerHTML = "";
+    const seatContainer = document.createElement("div");
+    seatContainer.className = "seats";
+
+    // Left column - V1 to V13
+    const singleColumn = document.createElement("div");
+    singleColumn.className = "left-column";
     for (let i = 1; i <= 13; i++) {
+        const vSeat = createSeat(`V${i}`, "seat");
+        singleColumn.appendChild(vSeat);
+    }
+
+    // Right column - Double Seats A, Bw, ..., 20w
+    const doubleColumn = document.createElement("div");
+    doubleColumn.className = "right-column";
+
+    const doubleLabels = [
+        ["A", "Bw"], ["C", "Dw"], ["E", "Fw"], ["1", "2w"],
+        ["3", "4w"], ["5", "6w"], ["7", "8w"], ["9", "10w"],
+        ["11", "12w"], ["13", "14w"], ["15", "16w"],
+        ["17", "18w"], ["19", "20w"]
+    ];
+
+    doubleLabels.forEach(pair => {
         const row = document.createElement("div");
-        row.className = "row";
-        const d = createSeat(`D${i}`, "doubleSeat");
-        const w = createSeat(`W${i}`, "windowSeat");
-        row.appendChild(d);
-        row.appendChild(w);
-        seatsDiv.appendChild(row);
-    }
+        row.className = "row-labels";
+
+        pair.forEach(label => {
+            const labelDiv = document.createElement("div");
+            labelDiv.className = "double-label";
+            labelDiv.textContent = label;
+            row.appendChild(labelDiv);
+        });
+
+        doubleColumn.appendChild(row);
+    });
+
+    seatContainer.appendChild(singleColumn);
+    seatContainer.appendChild(doubleColumn);
+    seatsDiv.appendChild(seatContainer);
 }
 
+// Bed Seats Layout
 function showBedSeats() {
     seatsDiv.innerHTML = "";
 
-    const bedContainer = document.createElement("div");
-    bedContainer.style.display = "flex";
-    bedContainer.style.gap = "10px";
-    bedContainer.style.justifyContent = "center";
+    const bedLayout = document.createElement("div");
+    bedLayout.className = "seats";
 
-    for (let col = 0; col < 3; col++) {
-        const column = document.createElement("div");
-        column.style.display = "flex";
-        column.style.flexDirection = "column";
-        column.style.gap = "10px";
-
-        for (let i = 1; i <= 6; i++) {
-            const bedNumber = col * 6 + i;
-            const bed = createSeat(`B${bedNumber}`, "bedSeat");
-            column.appendChild(bed);
-        }
-
-        bedContainer.appendChild(column);
+    // Left - S1 to S6 (vertical)
+    const sColumn = document.createElement("div");
+    sColumn.className = "left-column";
+    for (let i = 1; i <= 6; i++) {
+        const sSeat = createSeat(`S${i}`, "seat bedSeat");
+        sColumn.appendChild(sSeat);
     }
 
-    seatsDiv.appendChild(bedContainer);
+    // Right - U1/2 to U11/12 (2 columns)
+    const uColumn = document.createElement("div");
+    uColumn.className = "right-column";
+
+    const uPairs = [
+        ["U1", "2"], ["U3", "4"], ["U5", "6"],
+        ["U7", "8"], ["U9", "10"], ["U11", "12"]
+    ];
+
+    uPairs.forEach(pair => {
+        const row = document.createElement("div");
+        row.className = "row-labels";
+
+        pair.forEach(label => {
+            const uSeat = createSeat(label, "seat bedSeat");
+            row.appendChild(uSeat);
+        });
+
+        uColumn.appendChild(row);
+    });
+
+    bedLayout.appendChild(sColumn);
+    bedLayout.appendChild(uColumn);
+    seatsDiv.appendChild(bedLayout);
 }
 
-// ------------------------------
-// Seat Creation
-// ------------------------------
-function createSeat(label, type) {
+// Create Seat
+function createSeat(label, className) {
     const div = document.createElement("div");
-    div.className = `seat ${type}`;
+    div.className = className;
 
     if (bookings[label]) {
-        const { name, paid } = bookings[label];
         div.classList.add("booked");
-        div.innerHTML = `${label}<br>(${name})<br>${paid ? "✔ Paid" : "❌ Pending"}`;
+        div.innerHTML = `${label}<br>(${bookings[label].name})`;
     } else {
         div.classList.add("available");
         div.textContent = label;
@@ -75,30 +108,19 @@ function createSeat(label, type) {
     return div;
 }
 
-// ------------------------------
-// Booking Handler
-// ------------------------------
+// Booking Handler (no payment prompt)
 function handleBooking(div, label) {
-    if (bookings[label]) {
-        alert(`Seat ${label} already booked by ${bookings[label].name} (${bookings[label].paid ? "Paid" : "Pending"})`);
-        return;
-    }
-
     const name = prompt(`Enter name to book seat ${label}`);
     if (!name) return;
 
-    const paid = confirm("Is the payment received?");
-    bookings[label] = { name, paid };
-
+    bookings[label] = { name };
     localStorage.setItem("bookings", JSON.stringify(bookings));
     div.classList.remove("available");
     div.classList.add("booked");
-    div.innerHTML = `${label}<br>(${name})<br>${paid ? "✔ Paid" : "❌ Pending"}`;
+    div.innerHTML = `${label}<br>(${name})`;
 }
 
-// ------------------------------
-// Clear All Booking
-// ------------------------------
+// Clear Bookings
 function clearAllBookings() {
     if (confirm("Clear all bookings?")) {
         bookings = {};
