@@ -5,7 +5,7 @@ body {
 }
 
 #container {
-    max-width: 500px;
+    max-width: 900px;
     margin: auto;
     background: white;
     padding: 20px;
@@ -36,13 +36,13 @@ h1 {
 
 #buttons {
     display: flex;
-    flex-direction: column;
     gap: 10px;
     margin: 20px 0;
+    justify-content: center;
 }
 
 #buttons button {
-    padding: 10px;
+    padding: 10px 20px;
     font-size: 16px;
     background: #2d98da;
     color: white;
@@ -57,19 +57,28 @@ h1 {
 
 .seats {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
+    gap: 50px;
+    justify-content: center;
+    align-items: flex-start;
 }
 
-.row {
+.left-column,
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.row-labels {
     display: flex;
     gap: 10px;
+    justify-content: flex-start;
 }
 
 .seat {
     padding: 10px 14px;
     border-radius: 6px;
+    background-color: #3498db; /* Blue for Single Seat */
     color: white;
     font-weight: bold;
     text-align: center;
@@ -77,22 +86,32 @@ h1 {
     min-width: 60px;
 }
 
-.available { background-color: #2ecc71; } /* Green */
-.booked { background-color: #e74c3c !important; } /* Red */
+.bedSeat {
+    background-color: #f39c12; /* Orange for Bed Seat */
+}
 
-.singleSeat { background-color: #3498db; } /* Blue */
-.doubleSeat { background-color: #9b59b6; } /* Purple */
-.bed        { background-color: #f39c12; } /* Orange */
-.window     { border: 2px solid #fff; }
+.double-label {
+    min-width: 60px;
+    text-align: center;
+    font-weight: bold;
+    padding: 10px 14px;
+    color: white;
+    background-color: #9b59b6; /* Purple for Double and Window Seats */
+    border-radius: 6px;
+}
+
+.available {
+    background-color: #2ecc71; /* Green */
+}
+
+.booked {
+    background-color: #e74c3c !important; /* Red */
+}
 
 /* Responsive */
-@media (max-width: 480px) {
-    #container {
-        padding: 15px;
-    }
-
-    .seat {
-        font-size: 14px;
-        padding: 10px;
+@media (max-width: 768px) {
+    .seats {
+        flex-direction: column;
+        align-items: center;
     }
 }
