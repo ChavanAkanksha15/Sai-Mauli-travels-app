@@ -3,30 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sai Travels Booking</title>
+  <title>Sai-Mauli Travels Booking</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div id="container">
     <h1>Sai-Mauli Travels Seat Booking</h1>
 
-    <!-- Legend -->
+    <!-- Legend with Color Information -->
     <div id="legend">
-      <span class="legend-box singleSeat">S</span> = Single &nbsp;&nbsp;
-      <span class="legend-box doubleSeat">D</span> = Double &nbsp;&nbsp;
-      <span class="legend-box doubleSeat window">W</span> = Window &nbsp;&nbsp;
-      <span class="legend-box bed">B</span> = Bed
+      <span class="legend-box singleSeat" style="background-color: #3498db;">S</span> = Single Seat &nbsp;&nbsp;
+      <span class="legend-box doubleSeat" style="background-color: #9b59b6;">D</span> = Double Seat &nbsp;&nbsp;
+      <span class="legend-box window" style="background-color: #9b59b6;">W</span> = Window Seat &nbsp;&nbsp;
+      <span class="legend-box bed" style="background-color: #f39c12;">B</span> = Bed Seat
     </div>
 
     <!-- Buttons -->
     <div id="buttons">
-      <button onclick="showSingleSeats()">Single Seat</button>
-      <button onclick="showDoubleSeats()">Double Seat</button>
+      <button onclick="showSeats()">Seats</button>
       <button onclick="showBedSeats()">Bed</button>
       <button onclick="clearAllBookings()">Clear All Booking</button>
     </div>
 
-    <!-- Layouts -->
+    <!-- Seat Layout -->
     <div id="seats" class="seats"></div>
   </div>
 
