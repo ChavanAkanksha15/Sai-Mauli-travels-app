@@ -5,14 +5,14 @@ window.onload = () => {
     showSeats();
 };
 
-// Combined Seats View
+// Combined Seats View (Single + Double Seats)
 function showSeats() {
     seatsDiv.innerHTML = "";
 
     const seatContainer = document.createElement("div");
     seatContainer.className = "seats";
 
-    // Left column - V1 to V13
+    // Left column - V1 to V13 (Single Seats)
     const singleColumn = document.createElement("div");
     singleColumn.className = "left-column";
     for (let i = 1; i <= 13; i++) {
@@ -39,6 +39,7 @@ function showSeats() {
             const labelDiv = document.createElement("div");
             labelDiv.className = "double-label";
             labelDiv.textContent = label;
+            labelDiv.onclick = () => handleBooking(labelDiv, label); // Add click handler for double seats
             row.appendChild(labelDiv);
         });
 
@@ -91,7 +92,7 @@ function showBedSeats() {
     seatsDiv.appendChild(bedLayout);
 }
 
-// Create Seat
+// Create Seat (Both Single and Double)
 function createSeat(label, className) {
     const div = document.createElement("div");
     div.className = className;
@@ -108,7 +109,7 @@ function createSeat(label, className) {
     return div;
 }
 
-// Booking Handler (no payment prompt)
+// Booking Handler (No payment prompt)
 function handleBooking(div, label) {
     const name = prompt(`Enter name to book seat ${label}`);
     if (!name) return;
